@@ -2,23 +2,33 @@
 
 把录音笔 U 盘 `RECORDER` 文件夹中的 `Note-YYYYMMDDHHMMSS.mp3` 复制到 `YYYY年M月/D日` 文件夹，并检查副本大小。源录音默认保留。
 
-## 一条命令安装
+## 一条命令安装（WorkBuddy / Codex / Claude Code）
 
-先安装 Node.js（自带 npm / npx）及 Git，在终端执行：
+先安装 Node.js（自带 npm / npx）及 Git。在终端执行对应命令；Windows 可使用 PowerShell。
 
-```sh
-npx --yes skills add trumpli219-ui/audio-diary-archive -g -y
-```
-
-安装器会发现本机支持的 Agent，使用用户级共享 Skills 目录及相应链接。默认采用链接方式，不需要逐个复制技能。安装器说明见 [vercel-labs/skills](https://github.com/vercel-labs/skills)。安装后新开一个 Agent 对话。
-
-需要明确指定 Codex / Claude Code 时：
+### WorkBuddy
 
 ```sh
-npx --yes skills add trumpli219-ui/audio-diary-archive -g -a codex claude-code -y
+npx --yes skills add trumpli219-ui/audio-diary-archive -g -a codebuddy -y
 ```
 
-未被安装器识别的工具，需要将其技能发现目录连接到公用目录中的 `audio-diary-archive`，或通过工具的“导入本地 Skill”功能导入该目录。不能保证所有 Agent 自动识别。
+这里参数是 `codebuddy`，不是 `workbuddy`。根据 [WorkBuddy 官方项目配置说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Project)，WorkBuddy 兼容 `.codebuddy` 配置，包括用户级配置。安装器在公用 `~/.agents/skills/audio-diary-archive` 保存技能，并在 `~/.codebuddy/skills/audio-diary-archive` 建立入口，避免维护多份技能。
+
+安装后重启 WorkBuddy 或新建对话，发送：`请使用 audio-diary-archive 技能，先确认技能和归档脚本能读取，暂时不要复制或删除录音。`
+
+### 同时供 WorkBuddy、Codex 和 Claude Code 使用
+
+```sh
+npx --yes skills add trumpli219-ui/audio-diary-archive -g -a codebuddy codex claude-code -y
+```
+
+三个工具使用同一份技能内容。不要加 `--copy`，以免将其改为独立副本。安装器文档见 [vercel-labs/skills](https://github.com/vercel-labs/skills)。
+
+### WorkBuddy 技能列表中没出现
+
+目录安装与界面导入是两种发现方式；不同版本或会话可能有差异。可下载 [音频日记归档技能包](https://github.com/trumpli219-ui/audio-diary-archive/releases/latest/download/audio-diary-archive.zip)，在 WorkBuddy 的“技能 → 添加技能 → 上传技能”中导入，并确认启用。此方式由 WorkBuddy 管理副本，不再与公用目录自动同步；不要同时启用两份同名技能。
+
+官方导入流程见 [WorkBuddy 技能说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)。本仓库验证了安装目录、文件完整性和 Windows 归档脚本；未在 WorkBuddy 客户端实测技能列表及对话调用。
 
 ## 首次使用
 
